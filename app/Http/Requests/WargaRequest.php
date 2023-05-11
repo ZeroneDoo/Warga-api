@@ -11,7 +11,7 @@ class WargaRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return false;
+        return true;
     }
 
     /**
@@ -22,9 +22,18 @@ class WargaRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'email' => "required",
-            'password' => "required",
-            'no_ktp' => "required",
+            'email' => 'email:dns',
+            'password' => 'required',
+            'no_ktp' => 'required',
+        ];
+    }
+
+    public function messages()
+    {
+        return [
+            'email.required' => 'A email is required',
+            'password.required'  => 'A password is required',
+            'no_ktp.required'  => 'A no ktp is required',
         ];
     }
 }

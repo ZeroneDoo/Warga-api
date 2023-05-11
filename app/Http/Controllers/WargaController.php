@@ -35,7 +35,6 @@ class WargaController extends Controller
      */
     public function store(WargaRequest $request)
     {
-        // dd('ok');
         $data = Warga::create([        
         'email' => $request->email,
         'password' => Hash::make($request->password),
