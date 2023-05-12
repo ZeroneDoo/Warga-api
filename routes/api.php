@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Auth\AuthController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\WargaController;
@@ -21,3 +22,12 @@ use App\Http\Controllers\WargaController;
 
 Route::resource('/warga', WargaController::class);
 
+Route::controller(AuthController::class)->group(function(){
+    Route::post('/auth/register', 'register')->name('post.register');
+    Route::post('/auth/login', 'login')->name('post.login');
+
+    Route::group(['middleware' => ['auth:sanctum']], function(){
+        Route::get('auth/warga', 'warga');
+        Route::post('auth/logout', 'logout');
+    });
+});
