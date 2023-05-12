@@ -17,7 +17,7 @@ class WargaController extends Controller
 
         return response()->json([
          'success' => true,
-         'message' => 'berhasil coy',
+         'message' => 'Data Warga',
          'data' => $data_warga,
         ], 200);
     }
@@ -33,19 +33,23 @@ class WargaController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(WargaRequest $request)
+    public function store(Request $request)
     {
-        $data = Warga::create([        
-        'email' => $request->email,
-        'password' => Hash::make($request->password),
-        'no_ktp' => $request->no_ktp,
-        ]);
+        $validatedData = $request->messages();
+        return dd($validatedData);
+
+
+        $warga = new Warga;
+        $user->no_ktp = $validated['no_ktp'];
+        $user->email = $validated['email'];
+        $user->password = bcrypt($validated['password']);
+        $user->save();
 
         return response()->json([
          'success' => true,
-         'message' => 'Data Tersimpan',
-         'data' => $request->all(),
-        ], 200);
+         'message' => 'Data Berhasil Ditambahkan',
+         'data' => $data,
+        ], 201);
     }
 
     /**
@@ -61,7 +65,13 @@ class WargaController extends Controller
      */
     public function edit(string $id)
     {
-        //
+        $edit = Warga::find($id);
+        
+        return response()->json([
+         'success' => true,
+         'message' => 'Data id',
+         'data yang terhapus' => $hapus_warga,
+        ], 200);
     }
 
     /**
@@ -83,7 +93,7 @@ class WargaController extends Controller
 
         return response()->json([
          'success' => true,
-         'message' => 'Data telah dihapus',
+         'message' => 'Data Berhasil dihapus',
          'data yang terhapus' => $hapus_warga,
         ], 200);
     }

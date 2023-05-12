@@ -2,6 +2,7 @@
 
 namespace App\Http\Requests;
 
+use Illuminate\Support\Facades\Validator;
 use Illuminate\Foundation\Http\FormRequest;
 
 class WargaRequest extends FormRequest
@@ -9,10 +10,10 @@ class WargaRequest extends FormRequest
     /**
      * Determine if the user is authorized to make this request.
      */
-    public function authorize(): bool
-    {
-        return true;
-    }
+    // public function authorize(): bool
+    // {
+    //     return true;
+    // }
 
     /**
      * Get the validation rules that apply to the request.
@@ -22,7 +23,7 @@ class WargaRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'email' => 'email:dns',
+            'email' => 'required|email:dns',
             'password' => 'required',
             'no_ktp' => 'required',
         ];
@@ -35,5 +36,9 @@ class WargaRequest extends FormRequest
             'password.required'  => 'A password is required',
             'no_ktp.required'  => 'A no ktp is required',
         ];
+    }
+
+    protected function formatErrors(Validator $validator){
+        return $validator->errors()->all();
     }
 }
