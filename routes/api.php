@@ -26,8 +26,8 @@ Route::controller(AuthController::class)->group(function(){
     Route::post('/auth/register', 'register')->name('post.register');
     Route::post('/auth/login', 'login')->name('post.login');
 
-    Route::group(['middleware' => ['auth:sanctum']], function(){
-        Route::get('auth/warga', 'warga');
-        Route::post('auth/logout', 'logout');
+    Route::middleware('auth:sanctum')->group(function(){
+        Route::get('/auth/warga', 'warga');
+        Route::post('/auth/logout', 'logout');
     });
 });

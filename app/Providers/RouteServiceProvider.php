@@ -18,6 +18,7 @@ class RouteServiceProvider extends ServiceProvider
      * @var string
      */
     public const HOME = '/home';
+    // protected $SpaceApi = 'App\Http\Controllers\Auth';
 
     /**
      * Define your route model bindings, pattern filters, and other route configuration.
@@ -35,6 +36,11 @@ class RouteServiceProvider extends ServiceProvider
 
             Route::middleware('web')
                 ->group(base_path('routes/web.php'));
+
+            // Route::prefix('api')
+            //     ->middleware('api')
+            //     ->namespace($this->SpaceApi)
+            //     ->group(base_path('routes/api.php'));
         });
     }
 }
