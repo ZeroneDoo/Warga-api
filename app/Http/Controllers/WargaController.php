@@ -2,23 +2,27 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\UpdateWargaRequest;
 use App\Models\Warga;
 use Illuminate\Http\Request;
 use App\Http\Requests\WargaRequest;
 use Illuminate\Support\Facades\Hash;
+
+use function App\Helpers\costumValidate;
 
 class WargaController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
-    public function index(){
-        $data_warga = Warga::all(); 
+    public function index()
+    {
+        $data_warga = Warga::all();
 
         return response()->json([
-         'success' => true,
-         'message' => 'Data Warga',
-         'data' => $data_warga,
+            'success' => true,
+            'message' => 'Data Warga',
+            'data' => $data_warga,
         ], 200);
     }
 
@@ -33,22 +37,18 @@ class WargaController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(WargaRequest $request)
     {
-        $validatedData = $request->messages();
-        return dd($validatedData);
-
-
-        $warga = new Warga;
-        $user->no_ktp = $validated['no_ktp'];
-        $user->email = $validated['email'];
-        $user->password = bcrypt($validated['password']);
-        $user->save();
+        $data = Warga::create([
+            'email' => $request->email,
+            'no_ktp' => $request->no_ktp,
+            'password' => Hash::make($request->password),
+        ]);
 
         return response()->json([
-         'success' => true,
-         'message' => 'Data Berhasil Ditambahkan',
-         'data' => $data,
+            'success' => true,
+            'message' => 'Data Berhasil Ditambahkan',
+            'data' => $data,
         ], 201);
     }
 
@@ -66,20 +66,36 @@ class WargaController extends Controller
     public function edit(string $id)
     {
         $edit = Warga::find($id);
-        
+
         return response()->json([
-         'success' => true,
-         'message' => 'Data id',
-         'data yang terhapus' => $hapus_warga,
+            'success' => true,
+            'message' => 'Data id',
+            'data yang terhapus' => $edit,
         ], 200);
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(UpdateWargaRequest $request, $id)
     {
-        //
+        $warga = Warga::find($id);
+
+        $warga->update([
+            'nama' => $request->nama,
+            'email' => $request->email,
+            'alamat' => $request->alamat,
+            'no_ktp' => $request->no_ktp,
+            'no_telepon' => $request->no_telepon,
+            'tanggal_lahir' => $request->tanggal_lahir,
+            'jk' => $request->jk
+        ]);
+
+        return response()->json([
+            'success' => true,
+            'message' => 'Data Warga',
+            'Data Berhasil di Ubah' => $warga,
+        ], 200);
     }
 
     /**
@@ -92,9 +108,9 @@ class WargaController extends Controller
         $hapus_warga->delete();
 
         return response()->json([
-         'success' => true,
-         'message' => 'Data Berhasil dihapus',
-         'data yang terhapus' => $hapus_warga,
+            'success' => true,
+            'message' => 'Data Berhasil dihapus',
+            'data yang terhapus' => $hapus_warga,
         ], 200);
     }
 }

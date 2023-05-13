@@ -42,7 +42,12 @@ class AuthController extends Controller
         }
         
         $token = $user->createToken($request->device_name)->plainTextToken; // membuat token untuk user
-        
+
+        $tokenWarga = explode("|", $token)[1];
+        $user->update([
+            'remember_token' => $tokenWarga
+        ]); 
+
         $this->response['message'] = 'success';
         $this->response['data'] = ['token' => $token];
 
